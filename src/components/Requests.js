@@ -29,8 +29,21 @@ const Requests = () => {
   useEffect(() => {
     if (!auth.getToken()) navigate("/login");
 
-    if (auth.getRole()) {
-      fetch("http://127.0.0.1:8000/api/pupil/unapproved")
+    if (auth.getRole() == "1") {
+      fetch("http://127.0.0.1:8000/api/pupil/")
+        .then((res) => res.json())
+        .then(
+          (res) => {
+            setItems(res);
+            setIsLoaded(true);
+          },
+          (err) => {
+            setError(err);
+            setIsLoaded(true);
+          }
+        );
+    } else {
+      fetch("http://127.0.0.1:8000/api/pupil/unapproved/" + auth.getUserId)
         .then((res) => res.json())
         .then(
           (res) => {
